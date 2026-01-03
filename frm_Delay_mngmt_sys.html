@@ -1,0 +1,468 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Delay_Management_System</title>
+    <!--Bootstrap 3.3.7-->
+    <!--<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .acontainer {
+            border: 3px solid #797d7f;
+            margin: 3px;
+            border-radius: 8px;
+        }
+
+        .cont_outer {
+            border: 2px solid black;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            font-size: 30px;
+            background-color: lightsteelblue;
+            padding: 15px;
+            font-weight: bold;
+            margin: 8px;
+            border-radius: 8px;
+        }
+
+        .cont_inner {
+            border: 2px solid black;
+            margin-top: 4px;
+            padding: 15px 5px 15px 5px;
+            margin: 8px;
+            border-radius: 8px;
+        }
+
+        .btn {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        button {
+            padding: 9px 9px 9px 9px;
+            border-radius: 6px;
+            border: 1px solid black;
+            background-color: #61ab61;
+            color: white;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+            button:hover {
+                /*                background-color: #7cc67c;*/
+                transform: scale(1.05);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+                background-color: #4b854b;
+            }
+
+        label {
+            padding: 2px 10px 2px 10px;
+            border: 2px solid black;
+            margin: 8px;
+            background-color: lightyellow;
+            border-radius: 3px;
+            margin-right: -20px;
+        }
+
+        input {
+            height: 20px;
+            font-size: 18px;
+            border-radius: 3px;
+            margin-left: -20px;
+        }
+
+            input:hover, label:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            }
+
+        td {
+            padding: 7px 0px 15px 20px;
+        }
+
+        .ref {
+            background-color: yellow;
+            border: 1px solid black;
+            border-radius: 50%;
+            color: black;
+        }
+
+            .ref:hover {
+                background-color: #FFFF9F;
+            }
+
+        .btn button.ref {
+            margin-left: 20px;
+        }
+    </style>
+    <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+    <!-- jQuery 3 -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+</head>
+<body onload="GetDSDelayCastNo();">
+    <div class="amain">
+        <div class="acontainer">
+            <!--delay management system-->
+            <div class="cont_outer">
+                <div> <center> DELAY MANAGEMENT SYSTEM </center> </div>
+            </div>
+            <form>
+                <div class="cont_inner">
+                    <div class="row" style="">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table style="width: 100%;">
+
+                                  <!--for cast no.-->
+                                <tr style="width:100%">
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <label> Cast No </label> </td>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12" style="margin-bottom:50px">
+                                        <input list="lst_cast" id="text_cast" placeholder="SELECT" style="text-align:center" onchange="OnChange_castNo();" onclick="clrfld();">
+                                        <datalist id="lst_cast"></datalist>
+                                    </td>
+
+                                </tr>
+
+                                <!--for actual start time, std time and cycle time-->
+                                <tr style="width: 100%">
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <label style="width:100%;"> Actual Start Time </label> </td>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <input type="text" id="act_st" style="text-align:center;"/> </td>
+
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <label> Actual End Time </label> </td>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"><input type="text" id="end_t" style="text-align:center;"></td>
+
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <label> Cycle Time </label> </td>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <input type="text" id="cyc_t" style="text-align:center;"> </td>
+                                </tr>
+
+                                <!--for std_time, dly_agency and dly_reason-->
+                                <tr>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <label> Standard Time </label> </td>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <input type="text" id="std_t" placeholder="" style="text-align:center;"/> </td>
+
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <label> Delay </label> </td>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <input type="text" id="dly" placeholder="" style="text-align:center;"/> </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <label> Delay Agency </label> </td>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                        <input list="lst_dlyAgncy" id="dlyAgncy" placeholder="SELECT" onchange="AgencyReason();" onclick="clrfld_2();" style="text-align:center;" />
+                                        <datalist id="lst_dlyAgncy"></datalist>
+                                    </td>
+
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"><label> Delay Reason </label></td>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                        <input list="lst_DlyRsn" id="DlyRsn" placeholder="SELECT" onclick="clrfld_3();" style="text-align:center;"/>
+                                        <datalist id="lst_DlyRsn"></datalist>
+                                    </td>
+
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <label> Remarks </label> </td>
+                                    <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <input type="text" id="rmk" placeholder="" style="text-align:center;"/> </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                    <!--for submit button-->
+                    <span class="btn">
+                        <button type="button" onclick="Insert_Data();">
+                            SUBMIT ENTRY
+                        </button>
+
+                        <button class="ref" type="reset" onclick="clrfld();"> <i class="fa-solid fa-rotate"></i> </button>
+                    </span>
+                </div>
+
+                <!--for second div-->
+                <div class="cont_inner">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <table style="width: 100%">
+                            <!--for strt,end submit and export to excel-->
+                            <tr style="width: 100%">
+
+                                <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <label> Start Time </label> </td>
+                                <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <input type="date" id="text_st" /> </td>
+
+                                <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"><label> End Time </label></td>
+                                <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"> <input type="date" id="text_et" /> </td>
+
+                                <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"><button type="button" onclick="display_data();" style="margin-right:-55px;"> DISPLAY DATA </button></td>
+                                <td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"><button type="button" onclick="expord_toexcel();"> EXPORT TO EXCEL </button></td>
+
+                            </tr>
+                        </table>
+                    </div>
+                    <table class="table table-bordered table-condensed table-responsive" border="1" id="tbl_show" style="width:100%; height:100%; border-collapse:collapse;font-size:smaller; -ms-word-wrap: break-word; word-wrap: break-word; max-width: none;"></table>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+
+        function Insert_Data() {
+            let Cast_No = document.getElementById('text_cast').value;
+            let Act_Start_Time = document.getElementById('act_st').value;
+            let End_Time = document.getElementById('end_t').value;
+            let Cycle_Time = document.getElementById('cyc_t').value;
+            let Std_Time = document.getElementById('std_t').value;
+            let Delay = document.getElementById('dly').value;
+            let Dly_Acy = document.getElementById('dlyAgncy').value;
+            let Dly_Rsn = document.getElementById('DlyRsn').value;
+            let rmk = document.getElementById('rmk').value;
+
+            $.ajax({
+                type: "POST",
+                url:'../WebMethods.asmx/Insert_Data',
+                data: JSON.stringify({
+                    CastNo: Cast_No,
+                    ActStart: Act_Start_Time,
+                    EndTime: End_Time,
+                    CycleTime: Cycle_Time,
+                    StdTime: Std_Time,
+                    Delay: Delay,
+                    Agency: Dly_Acy,
+                    Reason: Dly_Rsn,
+                    Remarks: rmk
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                   
+                    if (r.d === 'success') {
+                        alert('Record Saved Successfully!');
+                        clrfld();
+                    } else {
+                        alert('Failed to insert record: ' + r.d);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                    alert("⚠️ An error occurred while inserting data.");
+                }
+            });
+        }
+
+        //newnew
+        function clrfld() {
+            document.getElementById('text_cast').value = '';
+            document.getElementById('act_st').value = '';
+            document.getElementById('end_t').value = '';
+            document.getElementById('cyc_t').value = '';
+            document.getElementById('std_t').value = '';
+            document.getElementById('dly').value = '';
+            document.getElementById('dlyAgncy').value = '';
+            document.getElementById('DlyRsn').value = '';
+            document.getElementById('rmk').value = '';
+
+            document.getElementById('text_st').value = '';
+            document.getElementById('text_et').value = '';
+        }
+
+        function GetDSDelayCastNo() {
+            
+            $.ajax({
+                type: "POST",
+                url: '../WebMethods.asmx/Get_DS_CastNo',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var heatlist = '';
+                    heatlist = "<option value='' selected disabled>Select</option>";
+                    for (i = 0; i < response.d.length; i++) {
+                        
+                        var data = response.d[i];
+                        heatlist += '<option value="' + data.DS_CAST_NO + '">' + data.DS_CAST_NO + '</option>';
+                    }
+                    $("#lst_cast").html(heatlist);
+                }
+            });
+        }
+
+        function clrfld_2() {
+            document.getElementById('dlyAgncy').value = '';
+            document.getElementById('DlyRsn').value = '';
+        }
+
+        function clrfld_3(){
+            document.getElementById('DlyRsn').value = '';
+        }
+
+        function OnChange_castNo() {
+            var cast_no = document.getElementById('text_cast').value;
+            $.ajax({
+                type: "POST",
+                url:'../WebMethods.asmx/Get_DSDelay_Data',
+                data: JSON.stringify({ CastNo: cast_no }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccessChangeHeatNoList
+            });
+        }
+
+        function OnSuccessChangeHeatNoList(response) {
+            data = response.d[0];
+            document.getElementById("text_cast").value = data.DS_CAST_NO;
+            document.getElementById("act_st").value = data.ACT_DS_START;
+            document.getElementById("end_t").value = data.ACT_DS_END;
+            document.getElementById("cyc_t").value = data.CYCLE_TIME;
+            document.getElementById("std_t").value = data.STANDARD_TIME;
+            document.getElementById("dly").value = data.DELAY;
+            document.getElementById("dlyAgncy").value = data.DS_AGENCY;
+            document.getElementById("DlyRsn").value = data.DS_REASONS;
+            document.getElementById("rmk").value = data.REMARKS;
+            agency_first();
+        }
+
+        function agency_first() {
+            $.ajax({
+                type: "POST",
+                url: '../WebMethods.asmx/Get_DS_Agency',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var agency_1 = '';
+                    agency_1 = "<option value='0' disabled  selected>Select</option>";
+                    for (i = 0; i < response.d.length; i++) {
+                        var data = response.d[i];
+                        agency_1 += '<option value="' + data.DS_AGENCY + '">' + data.DS_AGENCY + '</option>';
+                    }
+                    $("#lst_dlyAgncy").html(agency_1);
+                }
+            });
+        }
+
+        function AgencyReason() {
+            debugger;
+            var agency_1 = document.getElementById("dlyAgncy").value;
+            $.ajax({
+                type: "POST",
+                url: '../WebMethods.asmx/Get_DS_AgencyReason', 
+                //data: JSON.stringify({
+                //    agencyReason: agency_1
+                //}),
+                data: '{"agencyReason":"' + agency_1.toString() + '"}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    debugger;
+                    var agency_r = '';
+                    agency_r = "<option value='0' disabled  selected>Select</option>";
+                    for (i = 0; i < response.d.length; i++) {
+                        var data = response.d[i];
+                        agency_r += '<option value="' + data.DS_REASONS + '">' + data.DS_REASONS + '</option>';
+                    }
+                    $("#lst_DlyRsn").html(agency_r);
+                }
+            });
+        }
+
+        
+        //newnewnewnew
+
+        function display_data() {
+            alert("JS loaded"); // ✅ Will now show up
+            
+            debugger;
+            var start_time = $('#text_st').val() + " 00:00:00";
+            var end_time = $('#text_et').val() + " 23:59:59";
+
+            if (!start_time || !end_time) {
+                alert("Please select both start and end dates.");
+                return;
+            }
+         
+            $.ajax({
+                type: "POST",
+                url: '../WebMethods.asmx/Get_ds_Delay_Download_Data',
+                //data: JSON.stringify({ start_time: start_time, end_time: end_time }),
+                data: '{"start_time":"' + start_time.toString() + '", "end_time":"' + end_time.toString() + '"}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    OnSuccessGetTableData(r);
+                },
+                error: function (xhr, status, error) {
+                    alert("AJAX call failed: " + error);
+                }
+            });
+        }
+
+        function OnSuccessGetTableData(response) {
+            
+            var data = response.d;
+            var data_2 = "<thead><tr class='gvHeaderStyle' style='text-align:center;background-color:#cddef7;width: 2580px;'>";
+            for (var j in data[0]) {
+                if (j == '__type') {
+                    data_2 += "<th style='width:60px;display:none;text-align:center;border: 1px solid silver;' scope='col'>" + j + "</th>";
+                }
+                else {
+                    data_2 += "<th style='width:60px;text-align:center;border: 1px solid gray;' scope='col'>" + j + "</th>";
+                }
+            }
+            data_2 += '</tr></thead><tbody>';
+            for (var i = 0; i < data.length; i++) {
+                data_2 += "<tr style='width: 2580px;text-align:center;'>";
+                for (var j in data[i]) {
+                    if (j == '__type') {
+                        data_2 += "<td style='width:60px;display:none;'></td>";
+                    }
+                    else if (data[i][j] == null) {
+                        data_2 += "<td style='width:60px;'></td>";
+                    }
+                    else {
+                        data_2 += "<td style='width:60px;'>" + data[i][j] + "</td>";
+                    }
+                }
+            }
+            data_2 += "</tbody>";
+            $('#tbl_show').html(data_2);
+        }
+
+        function expord_toexcel() {
+            var csv = [], cs = 0, m = 0, cs2 = 0, m2 = 0;
+            var row = []
+            var filename = "Delay_Mang_Sys.csv";
+            csv.push("Delay Mnagement System");
+            var rows = document.querySelectorAll('#tbl_show tr');
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+                for (var j = 1; j < cols.length; j++) {
+                    row.push($(cols[j]).find("input").length ? $(cols[j]).find("input").val() : cols[j].innerText);
+                    cs = cols[j].colSpan;
+                    m = cs - 1;
+                    for (var n = 0; n < m; n++) {
+                        row.push("");
+                    }
+                }
+                csv.push(row.join(","));
+            }
+            csv.push("\n");
+            downloadCSV(csv.join("\n"), filename);
+        }
+
+        function downloadCSV(csv, filename) {
+            var csvFile;
+
+            csvFile = new Blob([csv], { type: "text/csv" });
+
+            if (navigator.msSaveOrOpenBlob) {
+                navigator.msSaveOrOpenBlob(csvFile, filename);
+            } else {
+                var downloadLink;
+                downloadLink = document.createElement("a");
+                downloadLink.download = filename;
+                downloadLink.href = window.URL.createObjectURL(csvFile);
+                downloadLink.style.display = "none";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+            }
+        }
+
+    </script>
+</body>
+</html>
